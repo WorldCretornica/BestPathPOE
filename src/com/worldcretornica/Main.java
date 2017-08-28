@@ -23,6 +23,11 @@ public class Main {
 			
 			POEPath firstpath = new POEPath();
 			firstpath.unlock(1);
+			firstpath.unlock(2);
+			firstpath.unlock(3);
+			firstpath.unlock(4);
+			firstpath.unlock(5);
+			firstpath.unlock(6);
 			paths.add(firstpath);
 			
 			while (!paths.isEmpty())
@@ -35,10 +40,10 @@ public class Main {
 					
 					paths.add(path.clone());
 					
-					POENode currentNode = nodes.get(currentNodeId);
-					path.consume(currentNodeId, currentNode);
+					//POENode currentNode = nodes.get(currentNodeId);
+					path.consume(currentNodeId, currentNodeId);
 										
-					if (path.size() >= 50 || path.emptyUnlockedNodes()) {
+					if (path.size() >= 15 || path.emptyUnlockedNodes()) {
 						finishedpaths.add(path);
 						path.clearUnlockedNodes();
 					}
@@ -49,7 +54,7 @@ public class Main {
 		info("Path finding finished");
 		info(" " + finishedpaths.size() + " paths found!");
 		
-		for(POEPath path : finishedpaths)
+		/*for(POEPath path : finishedpaths)
 		{
 			String strpath = "";
 			
@@ -58,7 +63,7 @@ public class Main {
 				strpath = strpath + i + ",";
 			}
 			info("  " + strpath);
-		}
+		}*/
 	}
 	
 	
