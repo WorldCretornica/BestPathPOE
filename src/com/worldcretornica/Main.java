@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Main {
 
-	public static Map<Integer, POENode> nodes = new ConcurrentHashMap<>();
+	public static Map<Short, POENode> nodes = new ConcurrentHashMap<>();
 	public static Queue<POEPath> paths = null;
 	public static Set<POEPath> finishedpaths = new HashSet<>();
 		
@@ -22,12 +22,12 @@ public class Main {
 			paths = new ConcurrentLinkedQueue<>();
 			
 			POEPath firstpath = new POEPath();
-			firstpath.unlock(1);
-			firstpath.unlock(2);
-			firstpath.unlock(3);
-			firstpath.unlock(4);
-			firstpath.unlock(5);
-			firstpath.unlock(6);
+			firstpath.unlock((short) 1);
+			firstpath.unlock((short) 2);
+			firstpath.unlock((short) 3);
+			firstpath.unlock((short) 4);
+			firstpath.unlock((short) 5);
+			firstpath.unlock((short) 6);
 			paths.add(firstpath);
 			
 			while (!paths.isEmpty())
@@ -36,16 +36,26 @@ public class Main {
 				
 				while (!path.emptyUnlockedNodes())
 				{
-					Integer currentNodeId = path.pollUnlockedNode();
+					Short currentNodeId = path.pollUnlockedNode();
 					
-					paths.add(path.clone());
+					POEPath clone = path.clone();
+					if (!paths.contains(clone))
+						paths.add(clone);
 					
 					//POENode currentNode = nodes.get(currentNodeId);
-					path.consume(currentNodeId, currentNodeId);
+					path.consume(currentNodeId);
 										
-					if (path.size() >= 15 || path.emptyUnlockedNodes()) {
+					if (path.size() >= 80 || path.emptyUnlockedNodes()) {
 						finishedpaths.add(path);
 						path.clearUnlockedNodes();
+						
+						String strpath = "";
+						
+						for(Short i : path.getNodes())
+						{
+							strpath = strpath + i + ",";
+						}
+						info("  " + strpath);
 					}
 				}
 			}

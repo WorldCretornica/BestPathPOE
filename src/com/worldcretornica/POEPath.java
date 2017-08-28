@@ -1,46 +1,44 @@
 package com.worldcretornica;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class POEPath implements Cloneable {
 
-	private Map<Integer, Integer> nodes = new ConcurrentHashMap<>();
+	private ConcurrentSkipListSet<Short> nodes = new ConcurrentSkipListSet<>();
 	
-	private Queue<Integer> unlockedNodes = new ConcurrentLinkedQueue<>();
+	private Queue<Short> unlockedNodes = new ConcurrentLinkedQueue<>();
 	
 	@Override
 	protected POEPath clone() {
 		POEPath clone = new POEPath();
-		clone.unlockedNodes = new ConcurrentLinkedQueue<Integer>(this.unlockedNodes);
-		clone.nodes = new ConcurrentHashMap<Integer, Integer>(this.nodes);
+		clone.unlockedNodes = new ConcurrentLinkedQueue<Short>(this.unlockedNodes);
+		clone.nodes = new ConcurrentSkipListSet<Short>(this.nodes);
 		
 		return clone;
 	}
 	
-	public void consume(Integer i, Integer node) 
+	public void consume(Short node) 
 	{
-		nodes.put(i, node);
+		nodes.add(node);
 		
-		for(Integer n : Main.nodes.get(node).neighbors)
+		for(Short n : Main.nodes.get(node).neighbors)
 		{
 			unlock(n);
 		}
 	}
 	
-	public void unlock(Integer n)
+	public void unlock(Short n)
 	{
-		if (!containsUnlockedNode(n) && !nodes.containsKey(n))
+		if (!containsUnlockedNode(n) && !nodes.contains(n))
 		{
 			unlockedNodes.add(n);
 		}
 	}
 	
-	public Integer pollUnlockedNode()
+	public Short pollUnlockedNode()
 	{
 		return unlockedNodes.poll();
 	}
@@ -50,9 +48,9 @@ public class POEPath implements Cloneable {
 		return unlockedNodes.isEmpty();
 	}
 	
-	public boolean containsNode(Integer i)
+	public boolean contains(Short i)
 	{
-		return nodes.containsKey(i);
+		return nodes.contains(i);
 	}
 	
 	public Integer size()
@@ -60,7 +58,7 @@ public class POEPath implements Cloneable {
 		return nodes.size();
 	}
 	
-	public boolean containsUnlockedNode(Integer node)
+	public boolean containsUnlockedNode(Short node)
 	{
 		return unlockedNodes.contains(node);
 	}
@@ -70,9 +68,15 @@ public class POEPath implements Cloneable {
 		unlockedNodes.clear();
 	}
 	
-	public List<Integer> getNodes()
+	public Set<Short> getNodes()
 	{
-		List<Integer> nodelist = new ArrayList<Integer>(nodes.keySet()); 
-		return nodelist;
+		//Set<Short> nodelist = new HashSet<Short>(nodes); 
+		return nodes;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		return super.equals(obj);
 	}
 }

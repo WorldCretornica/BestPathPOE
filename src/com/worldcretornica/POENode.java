@@ -5,11 +5,11 @@ import java.util.Set;
 
 public class POENode {
 
-	public Set<Integer> neighbors = new HashSet<>();
+	public Set<Short> neighbors = new HashSet<>();
 	
 	public String name;
 	
-	public POENode(Set<Integer> n) {
+	public POENode(Set<Short> n) {
 		neighbors = n;
 	}
 }

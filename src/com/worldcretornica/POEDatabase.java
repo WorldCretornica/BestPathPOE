@@ -160,8 +160,8 @@ public class POEDatabase {
     }
     
     
-    public static Map<Integer, POENode> getAllNodes() {
-        HashMap<Integer, POENode> nodes = new HashMap<>();
+    public static Map<Short, POENode> getAllNodes() {
+        HashMap<Short, POENode> nodes = new HashMap<>();
         Statement statementNode = null;
         PreparedStatement statementNeighbor = null;
         ResultSet setNodes = null;
@@ -177,16 +177,16 @@ public class POEDatabase {
             //int size = 0;
             while (setNodes.next()) {
                 //size++;
-                int id = setNodes.getInt("id");
+                short id = setNodes.getShort("id");
                 String name = setNodes.getString("name");
                 
-                Set<Integer> neighbors = new HashSet<>();
+                Set<Short> neighbors = new HashSet<>();
                 
                 statementNeighbor.setInt(1, id);
                 setNeighbor = statementNeighbor.executeQuery();
                 
                 while (setNeighbor.next()) {
-                	int neighborid = setNeighbor.getInt("neighbornodeid");
+                	short neighborid = setNeighbor.getShort("neighbornodeid");
                 	neighbors.add(neighborid);
                 }
                 
